@@ -1,0 +1,95 @@
+{
+  "name": "EnterpriseDataLake",
+  "description": "Manifest for customer and sales data",
+  "version": "1.0",
+  "entities": [
+    {
+      "$type": "LocalEntity",
+      "name": "Contact",
+      "attributes": [
+        {
+          "name": "contactid",
+          "dataType": "string"
+        },
+        {
+          "name": "firstname",
+          "dataType": "string"
+        },
+        {
+          "name": "lastname",
+          "dataType": "string"
+        },
+        {
+          "name": "emailaddress1",
+          "dataType": "string"
+        },
+        {
+          "name": "createdon",
+          "dataType": "dateTime"
+        },
+        {
+          "name": "statecode",
+          "dataType": "int64"
+        }
+      ],
+      "partitions": [
+        {
+          "name": "ContactPartitions",
+          "location": "Contact/Contact.csv",
+          "fileFormatSettings": {
+            "$type": "CsvFormatSettings",
+            "columnHeaders": true,
+            "delimiter": ","
+          }
+        }
+      ]
+    },
+    {
+      "$type": "LocalEntity",
+      "name": "SalesOrder",
+      "attributes": [
+        {
+          "name": "salesorderid",
+          "dataType": "string"
+        },
+        {
+          "name": "customerid",
+          "dataType": "string"
+        },
+        {
+          "name": "totalamount",
+          "dataType": "decimal"
+        },
+        {
+          "name": "createdon",
+          "dataType": "dateTime"
+        }
+      ],
+      "partitions": [
+        {
+          "name": "SalesOrderPartitions",
+          "location": "SalesOrder/SalesOrder.csv",
+          "fileFormatSettings": {
+            "$type": "CsvFormatSettings",
+            "columnHeaders": true,
+            "delimiter": ","
+          }
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "$type": "SingleKeyRelationship",
+      "name": "Contact_SalesOrder_Relationship",
+      "fromAttribute": {
+        "entityName": "SalesOrder",
+        "attributeName": "customerid"
+      },
+      "toAttribute": {
+        "entityName": "Contact",
+        "attributeName": "contactid"
+      }
+    }
+  ]
+}
